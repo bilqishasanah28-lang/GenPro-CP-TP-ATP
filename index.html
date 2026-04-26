@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduGen Pro — Generator CP, TP & ATP Kurikulum Merdeka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,400;0,600;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+<style>
+:root {
+  --primary: #1a5c4a;
+  --primary-light: #2d8a6b;
+  --primary-pale: #e8f5f0;
+  --accent: #f0a500;
+  --accent-light: #fef3d0;
+  --surface: #ffffff;
+  --surface-2: #f8faf9;
+  --surface-3: #f0f4f2;
+  --border: #e2ece8;
+  --border-strong: #c5d9d2;
+  --text-1: #0d2118;
+  --text-2: #3d6b56;
+  --text-3: #7a9e8e;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(26,92,74,0.08);
+  --shadow-md: 0 4px 16px rgba(26,92,74,0.12);
+  --shadow-lg: 0 12px 40px rgba(26,92,74,0.15);
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-theme="dark"] {
+  --primary: #4db89a;
+  --primary-light: #6fd4b4;
+  --primary-pale: #0d2e24;
+  --accent: #f5b922;
+  --accent-light: #2d2000;
+  --surface: #0f1f19;
+  --surface-2: #162c22;
+  --surface-3: #1e3d30;
+  --border: #234834;
+  --border-strong: #2e5f47;
+  --text-1: #e4f5ed;
+  --text-2: #8ecfb0;
+  --text-3: #5a9478;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--surface-2);
+  color: var(--text-1);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+}
+/* ── HEADER ── */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo-group { display: flex; flex-direction: column; }
+.logo-mark {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+.logo-mark span { color: var(--accent); }
+.logo-sub {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: -2px;
+}
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+.btn-icon {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.45rem 0.6rem;
+  cursor: pointer;
+  color: var(--text-2);
+  transition: all var(--transition);
+  font-size: 1rem;
+  line-height: 1;
+}
+.btn-icon:hover { background: var(--surface-3); border-color: var(--border-strong); color: var(--text-1); }
+/* ── HERO ── */
+.hero {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 3.5rem 2rem 3rem;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-pale);
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text-1);
+  max-width: 700px;
+  margin: 0 auto 0.75rem;
+}
+.hero h1 em { font-style: italic; color: var(--primary); font-weight: 400; }
+.hero-desc {
+  font-size: 1rem;
+  color: var(--text-2);
+  max-width: 540px;
+  margin: 0 auto 0.5rem;
+}
+.developer-credit {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  letter-spacing: 0.03em;
+  opacity: 0.8;
+}
+/* ── MAIN LAYOUT ── */
+.main-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  flex: 1;
+  width: 100%;
+}
+.app-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+/* ── STEPS SIDEBAR ── */
+.steps-nav {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  position: sticky;
+  top: 80px;
+}
+.steps-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 1.25rem;
+}
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition);
+  position: relative;
+}
+.step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 1.25rem;
+  top: 2.75rem;
+  bottom: -0.75rem;
+  width: 1px;
+  background: var(--border);
+}
+.step-item.active { background: var(--primary-pale); }
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-3);
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+.step-item.active .step-num, .step-item.done .step-num {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+.step-item.done .step-num::before { content: '✓'; }
+.step-info .step-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-2);
+  display: block;
+}
+.step-info .step-desc { font-size: 0.72rem; color: var(--text-3); }
+.step-item.active .step-label { color: var(--primary); }
+/* ── CONTENT PANELS ── */
+.content-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.panel-section {
+  display: none;
+  padding: 2rem;
+  animation: fadeUp 300ms ease both;
+}
+.panel-section.active { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-header { margin-bottom: 1.75rem; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 0.3rem;
+}
+.section-desc { font-size: 0.85rem; color: var(--text-3); }
+/* ── FORM ── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.form-grid.full { grid-template-columns: 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group.span-2 { grid-column: span 2; }
+label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+}
+.required::after { content: ' *'; color: #e04040; }
+input[type="text"], input[type="number"], select, textarea {
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-1);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  width: 100%;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,92,74,0.12);
+}
+select { cursor: pointer; }
+textarea { resize: vertical; min-height: 90px; }
+.input-hint { font-size: 0.7rem; color: var(--text-3); }
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+.btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-outline {
+  background: transparent;
+  color: var(--text-2);
+  border: 1.5px solid var(--border-strong);
+}
+.btn-outline:hover { background: var(--surface-3); color: var(--text-1); }
+.btn-accent {
+  background: var(--accent);
+  color: #1a0f00;
+}
+.btn-accent:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-lg { padding: 0.8rem 2rem; font-size: 1rem; border-radius: var(--radius-lg); }
+.btn-full { width: 100%; justify-content: center; }
+.btn-row { display: flex; gap: 0.75rem; margin-top: 1.75rem; justify-content: flex-end; }
+/* ── CHIP SELECTOR ── */
+.chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition);
+  color: var(--text-2);
+  background: var(--surface-2);
+  user-select: none;
+}
+.chip:hover { border-color: var(--primary); color: var(--primary); }
+.chip.selected { background: var(--primary); border-color: var(--primary); color: white; }
+/* ── GENERATE PANEL ── */
+.gen-summary-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.gen-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.summary-item { display: flex; flex-direction: column; gap: 2px; }
+.summary-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); }
+.summary-value { font-size: 0.9rem; font-weight: 600; color: var(--text-1); }
+.loading-overlay {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+}
+.loading-overlay.active { display: flex; }
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 0.9rem; color: var(--text-2); font-weight: 500; }
+.loading-sub { font-size: 0.78rem; color: var(--text-3); }
+/* ── PREVIEW TABLES ── */
+.preview-tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--surface-2);
+  padding: 0.4rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+}
+.tab-btn {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  background: none;
+  color: var(--text-3);
+  white-space: nowrap;
+  font-family: var(--font-body);
+}
+.tab-btn.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-sm); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeUp 200ms ease; }
+.table-wrapper { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+th {
+  background: var(--primary-pale);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  border-bottom: 1.5px solid var(--border);
+}
+td {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-1);
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: var(--surface-2); }
+td[contenteditable="true"] {
+  cursor: text;
+  transition: background var(--transition);
+}
+td[contenteditable="true"]:focus {
+  background: var(--accent-light);
+  outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+  border-radius: 2px;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.badge-primary { background: var(--primary-pale); color: var(--primary); }
+.badge-accent { background: var(--accent-light); color: #7a4800; }
+.badge-neutral { background: var(--surface-3); color: var(--text-2); }
+/* ── TOAST ── */
+#toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 999;
+}
+.toast {
+  background: var(--text-1);
+  color: var(--surface);
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.85rem;
+  font-weight: 500;
+  animation: slideIn 300ms ease, fadeOut 300ms ease 2.7s forwards;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 320px;
+  box-shadow: var(--shadow-lg);
+}
+.toast.success { background: var(--primary); }
+.toast.error { background: #c0392b; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeOut { to { opacity: 0; transform: translateY(-8px); } }
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 0;
+  overflow: hidden;
+  position: sticky;
+  top: 64px;
+  z-index: 99;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-3);
+}
+.empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+.empty-state h3 { font-size: 1.1rem; color: var(--text-2); margin-bottom: 0.4rem; }
+.empty-state p { font-size: 0.85rem; }
+/* ── FOOTER ── */
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 2rem;
+  margin-top: auto;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+.footer-follow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border);
+  text-decoration: none;
+  color: var(--text-2);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all var(--transition);
+  background: var(--surface-2);
+}
+.social-link:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.social-link.instagram:hover { background: #fcf; border-color: #e040fb; color: #b005b0; }
+.social-link.facebook:hover { background: #e8f0fe; border-color: #1877f2; color: #1877f2; }
+.social-link.tiktok:hover { background: #f0f0f0; border-color: #000; color: #000; }
+.social-link.youtube:hover { background: #ffe8e8; border-color: #ff0000; color: #cc0000; }
+.social-icon { width: 16px; height: 16px; display: flex; align-items: center; }
+.footer-copy { font-size: 0.72rem; color: var(--text-3); }
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+/* ── INFO BOX ── */
+.info-box {
+  background: var(--primary-pale);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.1rem;
+  font-size: 0.82rem;
+  color: var(--text-2);
+  margin-bottom: 1rem;
+}
+/* ── ATP LEVEL ── */
+.atp-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+.level-l1 { background: #eaf3de; color: #27500a; }
+.level-l2 { background: #e6f1fb; color: #0c447c; }
+.level-l3 { background: #faeeda; color: #633806; }
+.level-l4 { background: #faece7; color: #712b13; }
+.level-l5 { background: #fbeaf0; color: #72243e; }
+.level-l6 { background: #eeedfe; color: #3c3489; }
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .app-grid { grid-template-columns: 1fr; }
+  .steps-nav { position: relative; top: 0; display: flex; flex-direction: column; }
+  .hero { padding: 2rem 1rem; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.span-2 { grid-column: span 1; }
+}
+@media (max-width: 600px) {
+  .social-links { flex-direction: column; align-items: center; }
+  .header-inner { padding: 0; }
+  .site-header { padding: 0 1rem; }
+  .main-container { padding: 0 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">Edu<span>Gen</span> Pro</div>
+      <div class="logo-sub">Kurikulum Merdeka Generator</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btnDarkMode" title="Toggle dark mode">🌙</button>
+      <button class="btn-icon" id="btnExportJSON" title="Export data JSON">⬇</button>
+      <button class="btn-icon" id="btnImportJSON" title="Import data JSON">⬆</button>
+      <input type="file" id="fileImport" accept=".json" style="display:none">
+    </div>
+  </div>
+</header>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+
+<section class="hero">
+
+  <h1>Generator <em>Cerdas</em> CP, TP & ATP<br>untuk Semua Jenjang Pendidikan</h1>
+  <p class="hero-desc">Dari PAUD hingga SMK — hasilkan dokumen perencanaan pembelajaran yang profesional, kontekstual, dan siap cetak dalam hitungan detik.</p>
+  <div class="developer-credit">Developed by Bilqis Gaya Hasanah</div>
+</section>
+
+<main class="main-container">
+  <div class="app-grid">
+    <!-- Steps Sidebar -->
+    <nav class="steps-nav">
+      <div class="steps-title">Alur Penggunaan</div>
+      <div class="step-item active" data-step="1" onclick="goToStep(1)">
+        <div class="step-num">1</div>
+        <div class="step-info">
+          <span class="step-label">Identitas Pembelajaran</span>
+          <span class="step-desc">Data sekolah & pengajar</span>
+        </div>
+      </div>
+      <div class="step-item" data-step="2" onclick="goToStep(2)">
+        <div class="step-num">2</div>
+        <div class="step-info">
+          <span class="step-label">Pilih Jenjang & Mapel</span>
+          <span class="step-desc">Jenjang, kelas, dan mata pelajaran</span>
+        </div>
+      </div>
+      <div class="step-item" data-step="3" onclick="goToStep(3)">
+        <div class="step-num">3</div>
+        <div class="step-info">
+          <span class="step-label">Generate Dokumen</span>
+          <span class="step-desc">Generate CP, TP & ATP otomatis</span>
+        </div>
+      </div>
+      <div class="step-item" data-step="4" onclick="goToStep(4)">
+        <div class="step-num">4</div>
+        <div class="step-info">
+          <span class="step-label">Preview & Export</span>
+          <span class="step-desc">Edit, preview, dan unduh Word</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content Panels -->
+    <div class="content-panel">
+
+      <!-- STEP 1: Identitas -->
+      <div class="panel-section active" id="step1">
+        <div class="section-header">
+          <h2 class="section-title">Identitas Pembelajaran</h2>
+          <p class="section-desc">Lengkapi data identitas untuk perangkat pembelajaran Anda</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="required">Nama Sekolah</label>
+            <input type="text" id="namaSekolah" placeholder="SD Muhammadiyah Metro Pusat" value="">
+          </div>
+          <div class="form-group">
+            <label class="required">Nama Guru</label>
+            <input type="text" id="namaGuru" placeholder="Bilqis Gaya Hasanah" value="">
+          </div>
+          <div class="form-group">
+            <label>NUPTK / NIP</label>
+            <input type="text" id="nuptk" placeholder="1366853" value="">
+          </div>
+          <div class="form-group">
+            <label>Tahun Pelajaran</label>
+            <input type="text" id="tahunPelajaran" placeholder="2024/2025" value="2024/2025">
+          </div>
+          <div class="form-group">
+            <label>Semester</label>
+            <select id="semester">
+              <option value="Ganjil">Ganjil</option>
+              <option value="Genap">Genap</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Kurikulum</label>
+            <select id="kurikulum">
+              <option value="Kurikulum Merdeka">Kurikulum Merdeka</option>
+              <option value="K13">Kurikulum 2013</option>
+            </select>
+          </div>
+          <div class="form-group span-2">
+            <label>Alamat Sekolah</label>
+            <input type="text" id="alamatSekolah" placeholder="Jl. KH Ahmad Dahlan No. 1, Metro Pusat, Lampung" value="">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="goToStep(2)">Lanjut ke Pemilihan Jenjang →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Jenjang & Mapel -->
+      <div class="panel-section" id="step2">
+        <div class="section-header">
+          <h2 class="section-title">Pilih Jenjang & Mata Pelajaran</h2>
+          <p class="section-desc">Tentukan jenjang pendidikan, kelas, dan mata pelajaran yang akan diajarkan</p>
+        </div>
+
+        <div class="form-group" style="margin-bottom:1.25rem">
+          <label class="required">Jenjang Pendidikan</label>
+          <div class="chip-group" id="jenjangChips">
+            <div class="chip" onclick="selectJenjang('PAUD')">PAUD / TK</div>
+            <div class="chip" onclick="selectJenjang('SD')">SD / MI</div>
+            <div class="chip" onclick="selectJenjang('SMP')">SMP / MTs</div>
+            <div class="chip" onclick="selectJenjang('SMA')">SMA / MA</div>
+            <div class="chip" onclick="selectJenjang('SMK')">SMK / MAK</div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="required">Kelas</label>
+            <select id="kelas" onchange="onKelasChange()">
+              <option value="">— Pilih Jenjang Dulu —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fase Kurikulum</label>
+            <input type="text" id="faseDisplay" readonly placeholder="Otomatis" style="background:var(--surface-3);cursor:not-allowed;color:var(--text-2)">
+          </div>
+          <div class="form-group span-2">
+            <label class="required">Mata Pelajaran</label>
+            <select id="mapel" onchange="onMapelChange()">
+              <option value="">— Pilih Kelas Dulu —</option>
+            </select>
+          </div>
+          <div class="form-group span-2" id="smkGroup" style="display:none">
+            <label>Bidang / Konsentrasi Keahlian SMK</label>
+            <select id="smkKonsentrasi">
+              <option value="">— Pilih Konsentrasi —</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="required">Jumlah JP per Minggu</label>
+            <input type="number" id="jpMinggu" min="1" max="10" value="2">
+            <span class="input-hint">JP = Jam Pelajaran (1 JP = 35–45 menit)</span>
+          </div>
+          <div class="form-group">
+            <label>Jumlah Minggu Efektif</label>
+            <input type="number" id="mingguEfektif" min="1" max="26" value="18">
+          </div>
+        </div>
+
+        <div id="elemenSection" style="display:none; margin-top:1rem">
+          <label style="font-size:0.78rem;font-weight:600;color:var(--text-2);margin-bottom:0.5rem;display:block">Pilih Elemen CP (multi-pilih)</label>
+          <div class="chip-group" id="elemenChips"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="goToStep(1)">← Kembali</button>
+          <button class="btn btn-primary" onclick="goToStep(3)">Lanjut ke Generate →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Generate -->
+      <div class="panel-section" id="step3">
+        <div class="section-header">
+          <h2 class="section-title">Generate Dokumen Otomatis</h2>
+          <p class="section-desc">Tinjau ringkasan data dan mulai proses generate</p>
+        </div>
+
+        <div class="gen-summary-card">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:0.5rem">Ringkasan Data</div>
+          <div class="gen-summary-grid" id="summaryGrid">
+            <div class="summary-item"><span class="summary-label">Sekolah</span><span class="summary-value" id="sumSekolah">—</span></div>
+            <div class="summary-item"><span class="summary-label">Guru</span><span class="summary-value" id="sumGuru">—</span></div>
+            <div class="summary-item"><span class="summary-label">Jenjang</span><span class="summary-value" id="sumJenjang">—</span></div>
+            <div class="summary-item"><span class="summary-label">Kelas</span><span class="summary-value" id="sumKelas">—</span></div>
+            <div class="summary-item"><span class="summary-label">Fase</span><span class="summary-value" id="sumFase">—</span></div>
+            <div class="summary-item"><span class="summary-label">Mapel</span><span class="summary-value" id="sumMapel">—</span></div>
+            <div class="summary-item"><span class="summary-label">Total JP</span><span class="summary-value" id="sumJP">—</span></div>
+            <div class="summary-item"><span class="summary-label">Semester</span><span class="summary-value" id="sumSemester">—</span></div>
+          </div>
+        </div>
+
+        <div class="loading-overlay" id="loadingOverlay">
+          <div class="spinner"></div>
+          <div class="loading-text" id="loadingText">Menganalisis Capaian Pembelajaran...</div>
+          <div class="loading-sub">Mohon tunggu sebentar</div>
+        </div>
+
+        <div id="genActions">
+          <div class="info-box">💡 Generator akan membuat CP, TP dengan formula ABCD+SMART, dan ATP berlevel Bloom Taxonomy yang sesuai jenjang secara otomatis.</div>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+            <button class="btn btn-primary btn-lg" onclick="generateAll()">✦ Generate Sekarang</button>
+            <button class="btn btn-outline" onclick="goToStep(2)">← Edit Data</button>
+          </div>
+        </div>
+
+        <div class="btn-row" id="genNext" style="display:none">
+          <button class="btn btn-accent btn-lg" onclick="goToStep(4)">Lihat Preview & Export →</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Preview & Export -->
+      <div class="panel-section" id="step4">
+        <div class="section-header">
+          <h2 class="section-title">Preview & Export</h2>
+          <p class="section-desc">Klik pada sel untuk mengedit. Data otomatis tersimpan.</p>
+        </div>
+
+        <div id="previewEmpty" class="empty-state">
+          <div class="empty-icon">📄</div>
+          <h3>Belum ada data</h3>
+          <p>Lengkapi langkah sebelumnya dan generate dokumen terlebih dahulu</p>
+        </div>
+
+        <div id="previewContent" style="display:none">
+          <div class="preview-tabs">
+            <button class="tab-btn active" onclick="switchTab('cp')">Capaian Pembelajaran</button>
+            <button class="tab-btn" onclick="switchTab('tp')">Tujuan Pembelajaran</button>
+            <button class="tab-btn" onclick="switchTab('atp')">Alur Tujuan Pembelajaran</button>
+            <button class="tab-btn" onclick="switchTab('waktu')">Alokasi Waktu</button>
+          </div>
+
+          <div class="tab-panel active" id="tabCp">
+            <div class="table-wrapper"><table id="tableCp">
+              <thead><tr><th>#</th><th>Elemen</th><th>Capaian Pembelajaran</th><th>Fase</th></tr></thead>
+              <tbody></tbody>
+            </table></div>
+          </div>
+
+          <div class="tab-panel" id="tabTp">
+            <div class="table-wrapper"><table id="tableTp">
+              <thead><tr><th>#</th><th>Tujuan Pembelajaran</th><th>Materi Pokok</th><th>Indikator Ketercapaian</th><th>JP</th></tr></thead>
+              <tbody></tbody>
+            </table></div>
+          </div>
+
+          <div class="tab-panel" id="tabAtp">
+            <div class="table-wrapper"><table id="tableAtp">
+              <thead><tr><th>#</th><th>Level</th><th>Tujuan</th><th>Aktivitas Pembelajaran</th><th>Media</th><th>Asesmen</th><th>JP</th></tr></thead>
+              <tbody></tbody>
+            </table></div>
+          </div>
+
+          <div class="tab-panel" id="tabWaktu">
+            <div class="table-wrapper"><table id="tableWaktu">
+              <thead><tr><th>Komponen</th><th>Rincian</th></tr></thead>
+              <tbody></tbody>
+            </table></div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-outline" onclick="resetAll()">🔄 Mulai Ulang</button>
+            <button class="btn btn-primary" onclick="exportWord()">⬇ Export ke Word (.docx)</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-follow">Follow & Support Developer</div>
+    <div class="social-links">
+      <a href="https://www.instagram.com/bilqisgayahasanah?igsh=MTBjZzJ1YnNwM2V4dQ%3D%3D&utm_source=qr" target="_blank" class="social-link instagram" title="Kunjungi Instagram Bilqis Gaya Hasanah">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Instagram
+      </a>
+      <a href="https://www.facebook.com/share/1F4qcXn17z/?mibextid=wwXIfr" target="_blank" class="social-link facebook" title="Kunjungi Facebook Bilqis Gaya Hasanah">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        Facebook
+      </a>
+      <a href="https://www.tiktok.com/@guru.pembelajar?_r=1&_t=ZS-95qljmeBNVx" target="_blank" class="social-link tiktok" title="Kunjungi TikTok Bilqis Gaya Hasanah">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.79a4.85 4.85 0 0 1-1.01-.1z"/></svg>
+        TikTok
+      </a>
+      <a href="https://youtube.com/@guru.pembelajar02?si=ScTpoWLe5M8CnyMl" target="_blank" class="social-link youtube" title="Kunjungi YouTube Bilqis Gaya Hasanah">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02"/></svg>
+        YouTube
+      </a>
+    </div>
+    <div class="footer-copy">© 2026 Bilqis Gaya Hasanah · EduGen Pro · Generator Kurikulum Merdeka</div>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  DATABASE KURIKULUM — MODULAR & MULTI JENJANG
+// ══════════════════════════════════════════════════════
+const DB = {
+  jenjang: {
+    PAUD: {
+      label: 'PAUD / TK',
+      kelas: ['TK-A (Usia 4-5 Th)', 'TK-B (Usia 5-6 Th)'],
+      fase: { 'TK-A (Usia 4-5 Th)': 'Fondasi', 'TK-B (Usia 5-6 Th)': 'Fondasi' },
+      mapel: ['Nilai Agama & Budi Pekerti', 'Jati Diri', 'Literasi & STEAM'],
+      elemen: {
+        'Nilai Agama & Budi Pekerti': ['Nilai Agama & Moral', 'Budi Pekerti'],
+        'Jati Diri': ['Identitas Diri', 'Kesehatan & Motorik', 'Sosial-Emosional'],
+        'Literasi & STEAM': ['Bahasa & Literasi', 'Matematika Dasar', 'Sains & Teknologi', 'Seni & Kreativitas'],
+      },
+      cp: {
+        'Nilai Agama & Budi Pekerti': {
+          'Nilai Agama & Moral': 'Anak mengenal dan membiasakan diri dengan ajaran agama dan kepercayaan yang dianutnya melalui rutinitas ibadah sederhana, mengenal simbol-simbol keagamaan, dan memahami konsep kebaikan dasar.',
+          'Budi Pekerti': 'Anak menunjukkan perilaku baik dan sopan santun dalam interaksi sehari-hari, belajar berbagi dan bekerja sama, serta mampu mengekspresikan rasa terima kasih.',
+        },
+        'Jati Diri': {
+          'Identitas Diri': 'Anak mengenal identitas diri, keluarga inti, dan lingkungan terdekatnya, serta mampu menceritakan keunikan dirinya sendiri dengan percaya diri.',
+          'Kesehatan & Motorik': 'Anak menunjukkan kemampuan motorik kasar dan halus dalam aktivitas bermain, menjaga kebersihan diri, dan memahami kebiasaan hidup sehat.',
+          'Sosial-Emosional': 'Anak mengenali dan mengekspresikan emosi diri sendiri, berinteraksi positif dengan teman sebaya, dan mampu beradaptasi dalam lingkungan kelompok.',
+        },
+        'Literasi & STEAM': {
+          'Bahasa & Literasi': 'Anak menunjukkan kemampuan menyimak, berbicara, membaca gambar, dan menulis awal melalui kegiatan bermain yang menyenangkan dan kontekstual.',
+          'Matematika Dasar': 'Anak mengenal konsep bilangan 1–20, bentuk geometri dasar, ukuran relatif, dan pola sederhana melalui eksplorasi benda-benda konkret di sekitarnya.',
+          'Sains & Teknologi': 'Anak menunjukkan rasa ingin tahu terhadap fenomena alam sekitar, melakukan eksplorasi sederhana, dan menggunakan berbagai alat dan bahan dalam percobaan.',
+          'Seni & Kreativitas': 'Anak mengekspresikan diri melalui berbagai media seni (gambar, musik, gerak, dan drama), menghargai hasil karya sendiri dan orang lain.',
+        },
+      }
+    },
+    SD: {
+      label: 'SD / MI',
+      kelas: ['Kelas 1', 'Kelas 2', 'Kelas 3', 'Kelas 4', 'Kelas 5', 'Kelas 6'],
+      fase: { 'Kelas 1': 'Fase A', 'Kelas 2': 'Fase A', 'Kelas 3': 'Fase B', 'Kelas 4': 'Fase B', 'Kelas 5': 'Fase C', 'Kelas 6': 'Fase C' },
+      mapel: ['Pendidikan Agama Islam & BP', 'Pendidikan Pancasila', 'Bahasa Indonesia', 'Matematika', 'IPAS', 'PJOK', 'Seni & Budaya', 'Bahasa Inggris'],
+      elemen: {
+        'Pendidikan Agama Islam & BP': ['Al-Qur\'an & Hadis', 'Aqidah', 'Akhlak', 'Fiqih', 'Sejarah Peradaban Islam'],
+        'Pendidikan Pancasila': ['Pancasila', 'UUD NRI 1945', 'Bhinneka Tunggal Ika', 'NKRI'],
+        'Bahasa Indonesia': ['Menyimak', 'Membaca & Memirsa', 'Berbicara & Mempresentasikan', 'Menulis'],
+        'Matematika': ['Bilangan', 'Aljabar', 'Pengukuran', 'Geometri', 'Analisis Data & Peluang'],
+        'IPAS': ['Pemahaman IPAS', 'Keterampilan Proses'],
+        'PJOK': ['Gerak & Olahraga', 'Kebugaran', 'Kesehatan & Gaya Hidup Sehat'],
+        'Seni & Budaya': ['Berpikir & Bekerja Artistik', 'Mengalami', 'Menciptakan', 'Merefleksikan', 'Berdampak'],
+        'Bahasa Inggris': ['Menyimak', 'Membaca', 'Berbicara', 'Menulis'],
+      },
+      cp: {
+        'Bahasa Indonesia': {
+          'Menyimak': 'Peserta didik mampu menyimak dengan saksama berbagai jenis teks lisan dan audiovisual dalam berbagai konteks kehidupan, serta mengidentifikasi informasi berupa gagasan pokok dan pendukung yang disampaikan dalam bahasa Indonesia baku.',
+          'Membaca & Memirsa': 'Peserta didik mampu membaca dan memahami teks informasional dan fiksi dengan fasih, mengidentifikasi tujuan pengarang, membuat inferensi, serta menggunakan informasi pada teks untuk mengaktualisasikan diri sebagai pembaca mandiri.',
+          'Berbicara & Mempresentasikan': 'Peserta didik mampu menyampaikan gagasan, pikiran, pandangan, arahan atau pesan melalui presentasi monologis menggunakan media audiovisual dan lisan dalam bentuk teks informatif dan naratif.',
+          'Menulis': 'Peserta didik mampu menulis berbagai teks untuk menyampaikan gagasan dan pengalaman dengan lebih terstruktur, serta mampu menulis berdasarkan fakta, pengalaman, dan imajinasi untuk mengembangkan kemampuan menulis kreatif.',
+        },
+        'Matematika': {
+          'Bilangan': 'Peserta didik menunjukkan pemahaman dan intuisi bilangan pada bilangan cacah sampai 1.000.000, mampu melakukan operasi hitung penjumlahan, pengurangan, perkalian, dan pembagian bilangan cacah dan pecahan, serta memahami hubungan antar operasi.',
+          'Aljabar': 'Peserta didik mampu mengenali, memprediksi dan menggeneralisasi pola dalam bentuk susunan benda dan bilangan, dan menemukan hubungan perkalian dan pembagian melalui pola bilangan dan tabel perkalian.',
+          'Pengukuran': 'Peserta didik dapat melakukan pengukuran panjang, berat, waktu, volume, dan suhu menggunakan satuan baku, serta membandingkan dan mengurutkan obyek dengan menggunakan satuan baku.',
+          'Geometri': 'Peserta didik dapat mengidentifikasi, mendeskripsikan, dan mengklasifikasikan berbagai bentuk dan bangun datar, serta mengenal bangun ruang dan hubungan antar unsurnya.',
+          'Analisis Data & Peluang': 'Peserta didik dapat mengurutkan, membandingkan, menyajikan, menganalisis dan menginterpretasi data dalam bentuk tabel, diagram gambar, piktogram, dan diagram batang.',
+        },
+        'IPAS': {
+          'Pemahaman IPAS': 'Peserta didik memahami fakta, konsep, dan prosedur tentang makhluk hidup dan proses kehidupan, benda dan sifatnya, energi dan perubahannya, bumi dan alam semesta, serta kondisi geografis dan kehidupan sosial budaya di lingkungan sekitar.',
+          'Keterampilan Proses': 'Peserta didik mampu mengamati, mempertanyakan dan memprediksi, merencanakan dan melakukan penyelidikan, memproses dan menganalisis data, mengevaluasi dan merefleksikan, serta mengomunikasikan hasil penyelidikan.',
+        },
+        'Pendidikan Pancasila': {
+          'Pancasila': 'Peserta didik mampu memahami makna dan nilai-nilai yang terkandung dalam sila-sila Pancasila, mengaitkannya dengan kehidupan sehari-hari, serta menampilkan perilaku yang mencerminkan nilai Pancasila.',
+          'UUD NRI 1945': 'Peserta didik memahami hak dan kewajiban warga negara sesuai UUD NRI 1945 dan menerapkannya dalam kehidupan sehari-hari di lingkungan keluarga, sekolah, dan masyarakat.',
+          'Bhinneka Tunggal Ika': 'Peserta didik mampu mengenal dan menghargai keberagaman suku, budaya, agama, dan ras di Indonesia sebagai anugerah Tuhan Yang Maha Esa dan membangun persatuan.',
+          'NKRI': 'Peserta didik mengenal wilayah NKRI, memahami pentingnya persatuan dan kesatuan, serta berpartisipasi aktif dalam kegiatan yang memperkuat integrasi bangsa.',
+        },
+        'PJOK': {
+          'Gerak & Olahraga': 'Peserta didik menunjukkan kemampuan dalam berbagai aktivitas jasmani meliputi gerak dasar lokomotor, non-lokomotor, dan manipulatif, olahraga permainan, olahraga beladiri, senam, dan aktivitas ritmik.',
+          'Kebugaran': 'Peserta didik mampu mengembangkan kebugaran jasmani terkait kesehatan dan keterampilan gerak, menerapkan latihan fisik secara aman dan terukur, serta memahami komponen kebugaran jasmani.',
+          'Kesehatan & Gaya Hidup Sehat': 'Peserta didik memahami dan menerapkan konsep kesehatan, keselamatan, gizi, pola hidup sehat, dan perilaku higienis dalam kehidupan sehari-hari.',
+        },
+      }
+    },
+    SMP: {
+      label: 'SMP / MTs',
+      kelas: ['Kelas 7', 'Kelas 8', 'Kelas 9'],
+      fase: { 'Kelas 7': 'Fase D', 'Kelas 8': 'Fase D', 'Kelas 9': 'Fase D' },
+      mapel: ['Pendidikan Agama Islam & BP', 'Pendidikan Pancasila', 'Bahasa Indonesia', 'Matematika', 'IPA', 'IPS', 'Bahasa Inggris', 'PJOK', 'Informatika', 'Seni & Budaya'],
+      elemen: {
+        'Bahasa Indonesia': ['Menyimak', 'Membaca & Memirsa', 'Berbicara & Mempresentasikan', 'Menulis'],
+        'Matematika': ['Bilangan', 'Aljabar', 'Geometri', 'Analisis Data & Peluang'],
+        'IPA': ['Pemahaman IPA', 'Keterampilan Proses'],
+        'IPS': ['Pemahaman IPS', 'Keterampilan IPS'],
+        'Bahasa Inggris': ['Menyimak', 'Membaca', 'Berbicara', 'Menulis'],
+        'Informatika': ['BK', 'TIK', 'SK', 'JKI', 'AD', 'AP', 'DK'],
+        'Pendidikan Pancasila': ['Pancasila', 'UUD NRI 1945', 'Bhinneka Tunggal Ika', 'NKRI'],
+        'PJOK': ['Gerak & Olahraga', 'Kebugaran', 'Kesehatan & Gaya Hidup Sehat'],
+        'Seni & Budaya': ['Berpikir & Bekerja Artistik', 'Mengalami', 'Menciptakan', 'Merefleksikan'],
+      },
+      cp: {
+        'Matematika': {
+          'Bilangan': 'Peserta didik mampu membaca, menulis, dan membandingkan bilangan bulat, bilangan rasional dan irasional, bilangan desimal, bilangan berpangkat bulat dan akar, bilangan dalam notasi ilmiah; dan melakukan operasi aritmetika pada bilangan real dan estimasinya.',
+          'Aljabar': 'Peserta didik dapat mengenali, memprediksi dan menggeneralisasi pola dalam bentuk susunan benda dan bilangan; menyatakan suatu situasi ke dalam bentuk aljabar; menjelaskan sifat-sifat operasi dan hubungan antar operasi pada himpunan bilangan real; menggunakan operasi dan sifat-sifat tersebut.',
+          'Geometri': 'Peserta didik mampu membuktikan teorema yang terkait dengan sudut pada garis sejajar, segitiga, segiempat, dan menerapkannya dalam menyelesaikan masalah; membuktikan teorema Pythagoras dan menerapkannya; melakukan transformasi geometri; memahami kesebangunan dan kongruensi.',
+          'Analisis Data & Peluang': 'Peserta didik mampu merumuskan pertanyaan, mengumpulkan, menyajikan, dan menganalisis data untuk menjawab pertanyaan; menggunakan diagram batang dan diagram lingkaran untuk menyajikan dan menginterpretasi data; membuat dan menginterpretasi berbagai diagram dan tabel.',
+        },
+        'IPA': {
+          'Pemahaman IPA': 'Peserta didik mampu memahami pengetahuan ilmiah tentang karakteristik zat dan perubahannya, panas dan perpindahannya, gerak dan gaya, energi, listrik, magnet, gelombang, bunyi dan cahaya, bumi dan alam semesta, ekosistem dan keanekaragaman hayati, serta sel dan organisasi kehidupan.',
+          'Keterampilan Proses': 'Peserta didik mampu melakukan penyelidikan ilmiah secara mandiri dan berkelompok menggunakan metode ilmiah: mengidentifikasi dan merumuskan masalah, membuat hipotesis, merancang percobaan, mengumpulkan dan menganalisis data, menyimpulkan, dan mengomunikasikan hasil.',
+        },
+        'IPS': {
+          'Pemahaman IPS': 'Peserta didik memahami kondisi geografis Indonesia beserta potensi dan ancamannya, perkembangan kehidupan manusia dari masa praaksara hingga modern, kondisi ekonomi dan perdagangan internasional, serta dinamika sosial budaya masyarakat Indonesia.',
+          'Keterampilan IPS': 'Peserta didik mampu mengidentifikasi dan memahami fenomena sosial di lingkungan sekitar, menganalisis permasalahan sosial-ekonomi-budaya, berkolaborasi secara aktif dalam masyarakat, serta menyampaikan hasil analisisnya secara lisan maupun tertulis.',
+        },
+        'Bahasa Indonesia': {
+          'Menyimak': 'Peserta didik mampu menganalisis dan merefleksi berbagai jenis teks lisan dalam bentuk monolog maupun dialog terkait diri dan lingkungan sekitar, dan isi serta aspek kebahasaan dari berbagai jenis teks lisan.',
+          'Membaca & Memirsa': 'Peserta didik mampu membaca, mengidentifikasi, merepresentasikan, dan menginterpretasikan informasi dari berbagai teks fiksi dan non-fiksi dengan kritis dan reflektif; menemukan makna tersurat dan tersirat.',
+          'Berbicara & Mempresentasikan': 'Peserta didik mampu mempresentasikan gagasan, hasil pengamatan, dan pengalaman dengan logis, sistematis, kritis, dan kreatif, serta mampu berdiskusi dan bernegosiasi dengan efektif.',
+          'Menulis': 'Peserta didik mampu menulis gagasan, pikiran, pandangan, arahan atau pesan tertulis dengan berbagai tujuan secara logis, kritis, dan kreatif dalam bentuk teks informasional, teks argumentatif, teks naratif, dan teks prosedur.',
+        },
+      }
+    },
+    SMA: {
+      label: 'SMA / MA',
+      kelas: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
+      fase: { 'Kelas 10': 'Fase E', 'Kelas 11': 'Fase F', 'Kelas 12': 'Fase F' },
+      mapel: ['Pendidikan Agama Islam & BP', 'Pendidikan Pancasila', 'Bahasa Indonesia', 'Matematika', 'Bahasa Inggris', 'PJOK', 'Informatika', 'Seni & Budaya',
+              'Fisika', 'Kimia', 'Biologi', 'Sejarah', 'Geografi', 'Ekonomi', 'Sosiologi'],
+      elemen: {
+        'Matematika': ['Bilangan', 'Aljabar & Fungsi', 'Trigonometri', 'Geometri', 'Kalkulus', 'Analisis Data & Peluang'],
+        'Fisika': ['Pemahaman Fisika', 'Keterampilan Proses'],
+        'Kimia': ['Pemahaman Kimia', 'Keterampilan Proses Sains'],
+        'Biologi': ['Pemahaman Biologi', 'Keterampilan Proses Sains'],
+        'Bahasa Indonesia': ['Menyimak', 'Membaca & Memirsa', 'Berbicara & Mempresentasikan', 'Menulis'],
+        'Sejarah': ['Keterampilan Sejarah', 'Pemahaman Sejarah', 'Kesadaran Sejarah'],
+        'Geografi': ['Pemahaman Geografi', 'Keterampilan Geografi'],
+        'Ekonomi': ['Pemahaman Ekonomi', 'Keterampilan Ekonomi'],
+      },
+      cp: {
+        'Matematika': {
+          'Bilangan': 'Peserta didik dapat menggeneralisasi sifat-sifat bilangan berpangkat (termasuk bilangan pangkat pecahan) dan logaritma, serta menggunakan barisan dan deret (aritmetika dan geometri) dalam konteks pemodelan matematik.',
+          'Aljabar & Fungsi': 'Peserta didik dapat menginterpretasi ekspresi eksponensial dan logaritma, memodelkan berbagai situasi kontekstual menggunakan fungsi linear, kuadrat, polinom, logaritma, dan eksponensial, serta menyelesaikan sistem persamaan linear dan persamaan kuadrat.',
+          'Trigonometri': 'Peserta didik dapat mendefinisikan dan memanfaatkan perbandingan trigonometri dalam segitiga siku-siku dan berbagai kuadran, menggunakan identitas trigonometri sederhana, dan menyelesaikan permasalahan kontekstual.',
+          'Geometri': 'Peserta didik dapat menggunakan sistem koordinat untuk membuktikan teorema geometri dan menyelesaikan masalah, memahami persamaan lingkaran, ellips, parabola dan hiperbola.',
+          'Kalkulus': 'Peserta didik dapat memahami dan menerapkan konsep limit fungsi, turunan fungsi, integral tak tentu dan tertentu, serta penerapannya dalam menyelesaikan berbagai masalah kontekstual.',
+          'Analisis Data & Peluang': 'Peserta didik dapat memahami dan menggunakan distribusi data (rata-rata, median, modus, simpangan baku, kuartil, desil, persentil), kaidah pencacahan, dan peluang kejadian.',
+        },
+        'Fisika': {
+          'Pemahaman Fisika': 'Peserta didik mampu memahami dan menerapkan konsep-konsep dasar fisika: kinematika dan dinamika, usaha dan energi, gelombang dan optik, listrik dan magnet, fisika modern dan nuklir, serta menganalisis fenomena alam dalam kerangka hukum-hukum fisika.',
+          'Keterampilan Proses': 'Peserta didik mampu melakukan penyelidikan ilmiah yang mandiri dan kompleks, merancang eksperimen, mengumpulkan dan mengolah data secara kuantitatif, menganalisis kesalahan pengukuran, dan mengomunikasikan hasil penelitian dalam format ilmiah.',
+        },
+        'Kimia': {
+          'Pemahaman Kimia': 'Peserta didik mampu menganalisis struktur atom, sistem periodik unsur, ikatan kimia, stoikiometri reaksi, termokimia, kinetika kimia, kesetimbangan kimia, sifat larutan, elektrokimia, senyawa organik, dan polimer.',
+          'Keterampilan Proses Sains': 'Peserta didik mampu menerapkan metode ilmiah dalam penyelidikan kimia, merancang dan melaksanakan eksperimen dengan aman, menganalisis dan menginterpretasi data kuantitatif, serta menyajikan hasil penelitian secara ilmiah.',
+        },
+        'Biologi': {
+          'Pemahaman Biologi': 'Peserta didik dapat memahami sel sebagai unit struktural dan fungsional kehidupan, metabolisme sel, hereditas, evolusi, keanekaragaman hayati, ekologi, sistem organ manusia dan hewan, serta interaksi antara makhluk hidup dan lingkungannya.',
+          'Keterampilan Proses Sains': 'Peserta didik mampu merencanakan dan melaksanakan penyelidikan biologis secara sistematis, menganalisis data menggunakan statistik dasar, menginterpretasikan hasil penelitian secara kritis, dan mengomunikasikannya dalam format ilmiah.',
+        },
+      }
+    },
+    SMK: {
+      label: 'SMK / MAK',
+      kelas: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
+      fase: { 'Kelas 10': 'Fase E', 'Kelas 11': 'Fase F', 'Kelas 12': 'Fase F' },
+      mapel: ['Pendidikan Agama Islam & BP', 'Pendidikan Pancasila', 'Bahasa Indonesia', 'Matematika', 'Bahasa Inggris', 'PJOK', 'Informatika',
+              'Dasar-Dasar Program Keahlian', 'Mata Pelajaran Konsentrasi'],
+      konsentrasi: {
+        'Teknologi Informasi': ['Rekayasa Perangkat Lunak', 'Sistem Informasi Jaringan', 'Teknik Komputer & Jaringan', 'Multimedia', 'Animasi'],
+        'Kesehatan': ['Keperawatan', 'Farmasi', 'Teknologi Laboratorium Medik', 'Dental Asisten', 'Ortotik Prostetik'],
+        'Bisnis & Manajemen': ['Akuntansi & Keuangan Lembaga', 'Manajemen Perkantoran', 'Pemasaran', 'Bisnis Ritel'],
+        'Pariwisata': ['Usaha Perjalanan Wisata', 'Perhotelan', 'Kuliner', 'Spa & Kecantikan'],
+        'Pertanian': ['Agribisnis Tanaman', 'Agribisnis Ternak', 'Kehutanan', 'Teknologi Pengolahan Hasil Pertanian'],
+        'Teknik Mesin': ['Teknik Pemesinan', 'Teknik Pengelasan', 'Teknik Otomasi Industri', 'Desain Pemodelan Manufaktur'],
+        'Teknik Elektro': ['Teknik Instalasi Tenaga Listrik', 'Teknik Otomasi Industri', 'Teknik Elektronika'],
+        'Teknik Sipil': ['Desain Pemodelan & Informasi Bangunan', 'Konstruksi Gedung', 'Teknik Geomatika & Geospasial'],
+      },
+      elemen: {
+        'Dasar-Dasar Program Keahlian': ['Proses Bisnis', 'Perkembangan Teknologi & Isu Global', 'Profil Technopreneur', 'Teknik Dasar Keahlian', 'Keselamatan & Kesehatan Kerja'],
+        'Mata Pelajaran Konsentrasi': ['Kompetensi Inti Keahlian', 'Praktik Keahlian', 'Proyek Keahlian'],
+        'Matematika': ['Bilangan', 'Aljabar & Fungsi', 'Geometri', 'Analisis Data & Peluang'],
+        'Bahasa Indonesia': ['Menyimak', 'Membaca & Memirsa', 'Berbicara & Mempresentasikan', 'Menulis'],
+        'Bahasa Inggris': ['Menyimak', 'Membaca', 'Berbicara', 'Menulis'],
+        'Informatika': ['TIK', 'SK', 'JKI', 'AP', 'DK'],
+      },
+      cp: {
+        'Dasar-Dasar Program Keahlian': {
+          'Proses Bisnis': 'Peserta didik mampu memahami proses bisnis pada bidang keahliannya, mengidentifikasi potensi dan nilai tambah produk/jasa, menganalisis keunggulan kompetitif, dan menerapkan prinsip-prinsip wirausaha dalam konteks industri.',
+          'Perkembangan Teknologi & Isu Global': 'Peserta didik mampu menganalisis perkembangan teknologi terkini di bidang keahliannya, mengidentifikasi isu-isu global yang relevan, dan merespons perubahan teknologi dengan adaptif dan inovatif.',
+          'Profil Technopreneur': 'Peserta didik dapat membangun profil diri sebagai technopreneur dengan memahami karakteristik wirausaha sukses, mengembangkan ide inovatif, dan merancang model bisnis sederhana.',
+          'Teknik Dasar Keahlian': 'Peserta didik mampu melakukan pekerjaan dasar sesuai bidang keahliannya dengan menerapkan prosedur standar operasi, menggunakan peralatan yang tepat, dan menjaga kualitas hasil kerja.',
+          'Keselamatan & Kesehatan Kerja': 'Peserta didik mampu menerapkan prosedur K3LH, mengidentifikasi potensi bahaya di lingkungan kerja, menggunakan APD yang tepat, dan berpartisipasi aktif dalam budaya K3 di tempat kerja.',
+        },
+        'Mata Pelajaran Konsentrasi': {
+          'Kompetensi Inti Keahlian': 'Peserta didik mampu menguasai dan menerapkan kompetensi inti dari konsentrasi keahliannya sesuai dengan standar industri dan link-and-match dunia kerja, serta mampu memecahkan masalah keahlian secara sistematis.',
+          'Praktik Keahlian': 'Peserta didik mampu melaksanakan praktik keahlian sesuai standar kompetensi yang berlaku, mengintegrasikan pengetahuan teoritis dan keterampilan praktis, serta menghasilkan produk atau jasa yang bernilai dan berkualitas industri.',
+          'Proyek Keahlian': 'Peserta didik mampu merancang dan melaksanakan proyek keahlian secara mandiri maupun tim, mengintegrasikan berbagai kompetensi yang dipelajari, dan menghasilkan luaran proyek yang dapat dimanfaatkan dunia usaha/industri.',
+        },
+      }
+    }
+  }
+};
+
+// ══════════════════════════════════════════════════════
+//  STATE MANAGEMENT
+// ══════════════════════════════════════════════════════
+let state = {
+  step: 1,
+  jenjang: null,
+  kelas: null,
+  fase: null,
+  mapel: null,
+  elemenTerpilih: [],
+  generated: null,
+};
+
+function saveState() {
+  const data = {
+    identity: {
+      namaSekolah: v('namaSekolah'),
+      namaGuru: v('namaGuru'),
+      nuptk: v('nuptk'),
+      tahunPelajaran: v('tahunPelajaran'),
+      semester: v('semester'),
+      kurikulum: v('kurikulum'),
+      alamatSekolah: v('alamatSekolah'),
+    },
+    curriculum: {
+      jenjang: state.jenjang,
+      kelas: v('kelas'),
+      mapel: v('mapel'),
+      elemenTerpilih: state.elemenTerpilih,
+      jpMinggu: v('jpMinggu'),
+      mingguEfektif: v('mingguEfektif'),
+    },
+    generated: state.generated,
+  };
+  localStorage.setItem('edugen_pro', JSON.stringify(data));
+}
+
+function loadState() {
+  const raw = localStorage.getItem('edugen_pro');
+  if (!raw) return;
+  try {
+    const data = JSON.parse(raw);
+    const id = data.identity || {};
+    const cur = data.curriculum || {};
+    setValue('namaSekolah', id.namaSekolah);
+    setValue('namaGuru', id.namaGuru);
+    setValue('nuptk', id.nuptk);
+    setValue('tahunPelajaran', id.tahunPelajaran);
+    setValue('semester', id.semester);
+    setValue('kurikulum', id.kurikulum);
+    setValue('alamatSekolah', id.alamatSekolah);
+    if (cur.jenjang) {
+      selectJenjang(cur.jenjang, true);
+      setTimeout(() => {
+        setValue('kelas', cur.kelas); onKelasChange();
+        setValue('jpMinggu', cur.jpMinggu);
+        setValue('mingguEfektif', cur.mingguEfektif);
+        setTimeout(() => {
+          setValue('mapel', cur.mapel); onMapelChange();
+          state.elemenTerpilih = cur.elemenTerpilih || [];
+          updateElemenChips();
+        }, 50);
+      }, 50);
+    }
+    if (data.generated) {
+      state.generated = data.generated;
+    }
+    toast('Data sebelumnya berhasil dimuat ✓', 'success');
+  } catch(e) {}
+}
+
+function v(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function setValue(id, val) { const el = document.getElementById(id); if (el && val !== undefined && val !== null) el.value = val; }
+
+// ══════════════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════════════
+function goToStep(n) {
+  if (n === 2 && !validateStep1()) return;
+  if (n === 3 && !validateStep2()) return;
+  if (n === 4 && !state.generated) { toast('Generate dokumen terlebih dahulu!', 'error'); return; }
+  state.step = n;
+  document.querySelectorAll('.panel-section').forEach(el => el.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.querySelectorAll('.step-item').forEach(el => {
+    const s = parseInt(el.dataset.step);
+    el.classList.remove('active', 'done');
+    if (s === n) el.classList.add('active');
+    else if (s < n) el.classList.add('done');
+  });
+  document.getElementById('progressFill').style.width = (n / 4 * 100) + '%';
+  if (n === 3) updateSummary();
+  if (n === 4) renderPreview();
+  saveState();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validateStep1() {
+  if (!v('namaSekolah').trim()) { toast('Nama sekolah wajib diisi!', 'error'); return false; }
+  if (!v('namaGuru').trim()) { toast('Nama guru wajib diisi!', 'error'); return false; }
+  return true;
+}
+
+function validateStep2() {
+  if (!state.jenjang) { toast('Pilih jenjang pendidikan terlebih dahulu!', 'error'); return false; }
+  if (!v('kelas')) { toast('Pilih kelas terlebih dahulu!', 'error'); return false; }
+  if (!v('mapel')) { toast('Pilih mata pelajaran terlebih dahulu!', 'error'); return false; }
+  return true;
+}
+
+// ══════════════════════════════════════════════════════
+//  JENJANG & MAPEL SELECTION
+// ══════════════════════════════════════════════════════
+function selectJenjang(j, silent) {
+  state.jenjang = j;
+  state.elemenTerpilih = [];
+  document.querySelectorAll('#jenjangChips .chip').forEach(c => {
+    c.classList.toggle('selected', c.textContent.trim().startsWith(j));
+  });
+  const kelasEl = document.getElementById('kelas');
+  const opts = DB.jenjang[j].kelas;
+  kelasEl.innerHTML = '<option value="">— Pilih Kelas —</option>' + opts.map(k => `<option value="${k}">${k}</option>`).join('');
+  document.getElementById('faseDisplay').value = '';
+  document.getElementById('mapel').innerHTML = '<option value="">— Pilih Kelas Dulu —</option>';
+  document.getElementById('elemenSection').style.display = 'none';
+  document.getElementById('smkGroup').style.display = j === 'SMK' ? 'block' : 'none';
+  if (j === 'SMK') {
+    const konEl = document.getElementById('smkKonsentrasi');
+    konEl.innerHTML = '<option value="">— Pilih Konsentrasi —</option>' + Object.keys(DB.jenjang.SMK.konsentrasi).map(k => `<option value="${k}">${k}</option>`).join('');
+  }
+  if (!silent) toast(`Jenjang ${DB.jenjang[j].label} dipilih`, 'success');
+}
+
+function onKelasChange() {
+  const j = state.jenjang;
+  const k = v('kelas');
+  if (!j || !k) return;
+  const fase = DB.jenjang[j].fase[k] || '—';
+  state.fase = fase;
+  document.getElementById('faseDisplay').value = fase;
+  const mapelEl = document.getElementById('mapel');
+  const mapels = DB.jenjang[j].mapel;
+  mapelEl.innerHTML = '<option value="">— Pilih Mapel —</option>' + mapels.map(m => `<option value="${m}">${m}</option>`).join('');
+  document.getElementById('elemenSection').style.display = 'none';
+  state.elemenTerpilih = [];
+}
+
+function onMapelChange() {
+  const j = state.jenjang;
+  const m = v('mapel');
+  if (!j || !m) return;
+  const elemenMap = DB.jenjang[j].elemen[m];
+  if (elemenMap && elemenMap.length) {
+    document.getElementById('elemenSection').style.display = 'block';
+    state.elemenTerpilih = [...elemenMap];
+    updateElemenChips();
+  } else {
+    document.getElementById('elemenSection').style.display = 'none';
+  }
+}
+
+function updateElemenChips() {
+  const j = state.jenjang; const m = v('mapel');
+  if (!j || !m) return;
+  const all = DB.jenjang[j].elemen[m] || [];
+  document.getElementById('elemenChips').innerHTML = all.map(el =>
+    `<div class="chip ${state.elemenTerpilih.includes(el) ? 'selected' : ''}" onclick="toggleElemen('${el}')">${el}</div>`
+  ).join('');
+}
+
+function toggleElemen(el) {
+  if (state.elemenTerpilih.includes(el)) {
+    state.elemenTerpilih = state.elemenTerpilih.filter(e => e !== el);
+  } else {
+    state.elemenTerpilih.push(el);
+  }
+  updateElemenChips();
+}
+
+// ══════════════════════════════════════════════════════
+//  SUMMARY
+// ══════════════════════════════════════════════════════
+function updateSummary() {
+  const jp = (parseInt(v('jpMinggu')) || 2) * (parseInt(v('mingguEfektif')) || 18);
+  document.getElementById('sumSekolah').textContent = v('namaSekolah') || '—';
+  document.getElementById('sumGuru').textContent = v('namaGuru') || '—';
+  document.getElementById('sumJenjang').textContent = state.jenjang ? DB.jenjang[state.jenjang].label : '—';
+  document.getElementById('sumKelas').textContent = v('kelas') || '—';
+  document.getElementById('sumFase').textContent = state.fase || '—';
+  document.getElementById('sumMapel').textContent = v('mapel') || '—';
+  document.getElementById('sumJP').textContent = jp + ' JP';
+  document.getElementById('sumSemester').textContent = v('semester') || '—';
+}
+
+// ══════════════════════════════════════════════════════
+//  GENERATE ENGINE
+// ══════════════════════════════════════════════════════
+async function generateAll() {
+  const j = state.jenjang, m = v('mapel'), k = v('kelas');
+  if (!j || !m || !k) { toast('Data tidak lengkap!', 'error'); return; }
+  const fase = state.fase;
+  const jpTotal = (parseInt(v('jpMinggu')) || 2) * (parseInt(v('mingguEfektif')) || 18);
+  const jpMinggu = parseInt(v('jpMinggu')) || 2;
+  const mingguEfektif = parseInt(v('mingguEfektif')) || 18;
+  const elemen = state.elemenTerpilih.length ? state.elemenTerpilih : (DB.jenjang[j].elemen[m] || []);
+
+  document.getElementById('genActions').style.display = 'none';
+  document.getElementById('loadingOverlay').classList.add('active');
+  const loadingMsgs = [
+    'Menganalisis Capaian Pembelajaran...',
+    'Menyusun Tujuan Pembelajaran ABCD+SMART...',
+    'Membangun Alur Tujuan Pembelajaran...',
+    'Memetakan Level Bloom Taxonomy...',
+    'Menghitung Alokasi Waktu...'
+  ];
+  let li = 0;
+  const loadInt = setInterval(() => {
+    li = (li + 1) % loadingMsgs.length;
+    document.getElementById('loadingText').textContent = loadingMsgs[li];
+  }, 700);
+  await new Promise(r => setTimeout(r, 2800));
+  clearInterval(loadInt);
+
+  const cpDB = (DB.jenjang[j].cp || {})[m] || {};
+  const levelMax = (j === 'SD' || j === 'PAUD') ? 4 : 6;
+
+  // Build CP list
+  const cpList = elemen.map((el, i) => ({
+    no: i + 1,
+    elemen: el,
+    cp: cpDB[el] || generateDefaultCP(j, m, el, fase),
+    fase: fase,
+  }));
+
+  // Build TP list (1-2 TP per elemen)
+  const tpList = [];
+  let tpNo = 1;
+  for (const cp of cpList) {
+    const tps = generateTP(j, m, cp.elemen, cp.cp, fase, jpTotal, elemen.length);
+    for (const tp of tps) {
+      tp.no = tpNo++;
+      tpList.push(tp);
+    }
+  }
+
+  // Build ATP list (levels)
+  const atpList = generateATP(j, m, tpList, fase, jpTotal, levelMax);
+
+  // Build waktu
+  const waktu = generateWaktu(jpMinggu, mingguEfektif, jpTotal, tpList.length, j, m);
+
+  state.generated = { cpList, tpList, atpList, waktu, meta: { j, m, k, fase, jpTotal } };
+  document.getElementById('loadingOverlay').classList.remove('active');
+  document.getElementById('genNext').style.display = 'flex';
+  document.getElementById('genActions').style.display = 'block';
+  toast('Dokumen berhasil di-generate! ✓', 'success');
+  saveState();
+}
+
+function generateDefaultCP(j, m, elemen, fase) {
+  const templates = {
+    PAUD: `Pada akhir fase ${fase}, anak mampu mengeksplorasi dan mengembangkan kemampuan ${elemen.toLowerCase()} melalui kegiatan bermain yang menyenangkan, kreatif, dan kontekstual sesuai tahap perkembangannya.`,
+    SD: `Pada akhir fase ${fase}, peserta didik mampu memahami dan menerapkan konsep-konsep dasar dalam ${elemen.toLowerCase()} pada mata pelajaran ${m}, serta menggunakannya untuk memecahkan masalah sederhana di kehidupan sehari-hari.`,
+    SMP: `Pada akhir fase ${fase}, peserta didik mampu menganalisis dan mengaplikasikan ${elemen.toLowerCase()} dalam berbagai situasi kontekstual, mengembangkan kemampuan berpikir kritis, dan mengomunikasikan hasil penalaran dengan sistematis.`,
+    SMA: `Pada akhir fase ${fase}, peserta didik mampu mengevaluasi dan mensintesis ${elemen.toLowerCase()} secara komprehensif, menerapkan konsep dalam pemecahan masalah kompleks, serta menghasilkan karya/solusi yang inovatif.`,
+    SMK: `Pada akhir fase ${fase}, peserta didik mampu menguasai kompetensi ${elemen.toLowerCase()} sesuai standar industri, menerapkan dalam pekerjaan nyata, dan mengembangkan sikap profesional yang siap kerja dan berwirausaha.`,
+  };
+  return templates[j] || templates.SD;
+}
+
+// ABCD + SMART TP Generator
+function generateTP(j, m, elemen, cp, fase, jpTotal, totalElemen) {
+  const jpPerElemen = Math.floor(jpTotal / totalElemen);
+  const contexts = getContextByJenjang(j);
+  const verbMap = {
+    PAUD: ['mengenal', 'mengeksplorasi', 'menunjukkan', 'berpartisipasi dalam', 'menceritakan'],
+    SD: ['memahami', 'menjelaskan', 'mengidentifikasi', 'menerapkan', 'mendeskripsikan'],
+    SMP: ['menganalisis', 'membandingkan', 'mengklasifikasikan', 'mengevaluasi', 'menyimpulkan'],
+    SMA: ['mengevaluasi', 'mensintesis', 'merancang', 'mengkritisi', 'mengintegrasikan'],
+    SMK: ['menerapkan', 'merancang', 'melaksanakan', 'mengembangkan', 'mengelola'],
+  };
+  const verbs = verbMap[j] || verbMap.SD;
+  const jpPerTP = Math.max(2, Math.floor(jpPerElemen / 2));
+  return [
+    {
+      tp: buildTPSentence(verbs[0], elemen, m, fase, contexts.situasi[0], contexts.kondisi[0]),
+      materi: `${elemen} — Konsep Dasar`,
+      indikator: buildIndikator(j, elemen, verbs[0], 0),
+      jp: jpPerTP,
+    },
+    {
+      tp: buildTPSentence(verbs[2], elemen, m, fase, contexts.situasi[1], contexts.kondisi[1]),
+      materi: `${elemen} — Penerapan & Praktik`,
+      indikator: buildIndikator(j, elemen, verbs[2], 1),
+      jp: jpPerTP,
+    }
+  ];
+}
+
+function buildTPSentence(verb, elemen, mapel, fase, situasi, kondisi) {
+  return `Melalui ${situasi}, peserta didik dapat ${verb} ${elemen.toLowerCase()} dalam konteks ${mapel} dengan tepat dan sistematis sesuai fase ${fase}, sehingga mampu ${kondisi}.`;
+}
+
+function buildIndikator(j, elemen, verb, idx) {
+  const indicators = [
+    `Peserta didik dapat menjelaskan konsep ${elemen.toLowerCase()} dengan benar minimal 80% soal evaluasi.`,
+    `Peserta didik dapat ${verb} ${elemen.toLowerCase()} dalam situasi yang berbeda dengan hasil minimal Baik.`,
+  ];
+  return indicators[idx] || indicators[0];
+}
+
+function getContextByJenjang(j) {
+  const ctx = {
+    PAUD: {
+      situasi: ['kegiatan bermain eksplorasi', 'kegiatan berkreasi bersama'],
+      kondisi: ['mengembangkan kemampuan secara optimal sesuai usianya', 'tumbuh kembang dengan percaya diri dan mandiri'],
+    },
+    SD: {
+      situasi: ['kegiatan diskusi kelompok dan eksplorasi benda konkret', 'simulasi dan permainan edukatif berbasis masalah nyata'],
+      kondisi: ['memahami materi dengan baik dan mengaplikasikannya di kehidupan sehari-hari', 'menyelesaikan masalah sederhana secara mandiri dengan percaya diri'],
+    },
+    SMP: {
+      situasi: ['analisis kasus nyata dan diskusi ilmiah', 'penyelidikan berbasis proyek mini dan presentasi'],
+      kondisi: ['berpikir kritis dan sistematis dalam menghadapi persoalan faktual', 'mengomunikasikan hasil analisis dengan logis dan terstruktur'],
+    },
+    SMA: {
+      situasi: ['kajian literatur ilmiah dan problem-solving kontekstual', 'proyek penelitian mandiri dan kolaboratif antar disiplin'],
+      kondisi: ['mengevaluasi dan mensintesis informasi secara komprehensif', 'menghasilkan solusi inovatif yang berkelanjutan dan berdampak nyata'],
+    },
+    SMK: {
+      situasi: ['simulasi industri dan praktik bengkel/laboratorium', 'proyek keahlian nyata dengan standar link-and-match industri'],
+      kondisi: ['siap bekerja profesional sesuai standar kompetensi industri', 'berwirausaha dan mengembangkan karir di bidang keahliannya'],
+    },
+  };
+  return ctx[j] || ctx.SD;
+}
+
+// Bloom Taxonomy ATP
+function generateATP(j, m, tpList, fase, jpTotal, levelMax) {
+  const bloomVerbs = [
+    { level: 'L1', label: 'Mengingat', verbs: ['menyebutkan', 'mendefinisikan', 'menuliskan', 'mengidentifikasi', 'menamakan'] },
+    { level: 'L2', label: 'Memahami', verbs: ['menjelaskan', 'merangkum', 'menginterpretasi', 'mengklasifikasikan', 'mendeskripsikan'] },
+    { level: 'L3', label: 'Menerapkan', verbs: ['menerapkan', 'menggunakan', 'menyelesaikan', 'melaksanakan', 'menghitung'] },
+    { level: 'L4', label: 'Menganalisis', verbs: ['menganalisis', 'membandingkan', 'membedakan', 'menguraikan', 'mengorganisasikan'] },
+    { level: 'L5', label: 'Mengevaluasi', verbs: ['mengevaluasi', 'mengkritisi', 'memvalidasi', 'mengargumentasikan', 'menjustifikasi'] },
+    { level: 'L6', label: 'Mencipta', verbs: ['merancang', 'membuat', 'mengembangkan', 'menghasilkan', 'menyusun'] },
+  ];
+  const mediaByJenjang = {
+    PAUD: ['Alat peraga konkret', 'Media visual gambar', 'Lagu & gerak', 'Bermain peran', 'Puzzle & balok'],
+    SD: ['Buku teks & LKS', 'Media manipulatif', 'Video pembelajaran', 'PPT interaktif', 'Alat peraga IPA'],
+    SMP: ['Buku teks & e-book', 'Video edukatif', 'Lab & eksperimen', 'PPT & Canva', 'GeoGebra/aplikasi digital'],
+    SMA: ['Jurnal & artikel ilmiah', 'Lab eksperimen', 'Software simulasi', 'Platform digital', 'Sumber primer'],
+    SMK: ['Modul industri', 'Peralatan bengkel/lab', 'Software profesional', 'Video tutorial industri', 'Proyek nyata'],
+  };
+  const asesmenByJenjang = {
+    PAUD: 'Observasi & portofolio karya anak',
+    SD: 'Tes tertulis & unjuk kerja',
+    SMP: 'Tes tulis, praktikum & presentasi',
+    SMA: 'Tes kognitif tinggi, esai & proyek',
+    SMK: 'Uji kompetensi keahlian & proyek industri',
+  };
+  const media = mediaByJenjang[j] || mediaByJenjang.SD;
+  const asesmen = asesmenByJenjang[j] || asesmenByJenjang.SD;
+  const jpPerLevel = Math.max(2, Math.floor(jpTotal / levelMax));
+  const atpList = [];
+  let no = 1;
+  for (const tp of tpList) {
+    for (let l = 0; l < Math.min(levelMax, bloomVerbs.length); l++) {
+      const bloom = bloomVerbs[l];
+      const topicShort = tp.materi.split('—')[0].trim();
+      const verb = bloom.verbs[l % bloom.verbs.length];
+      const aktivitas = generateAktivitas(j, bloom.level, tp.materi);
+      atpList.push({
+        no: no++,
+        level: bloom.level,
+        levelLabel: bloom.label,
+        tujuan: `Peserta didik dapat ${verb} ${topicShort.toLowerCase()} secara ${l < 2 ? 'individual' : l < 4 ? 'terstruktur' : 'kompleks dan kreatif'}.`,
+        aktivitas: aktivitas,
+        media: media[l % media.length],
+        asesmen: l < 2 ? 'Kuis lisan/tulis singkat' : l < 4 ? asesmen : 'Proyek & portofolio',
+        jp: jpPerLevel,
+      });
+    }
+  }
+  return atpList;
+}
+
+function generateAktivitas(j, level, materi) {
+  const templates = {
+    PAUD: {
+      L1: 'Guru memperkenalkan konsep melalui lagu dan gambar. Anak menyebutkan nama benda/konsep yang ditunjukkan.',
+      L2: 'Eksplorasi benda konkret di area bermain. Anak menceritakan kembali apa yang dilihat dan dirasakan.',
+      L3: 'Anak mencoba menggunakan alat/bahan secara mandiri dalam kegiatan sentra bermain.',
+      L4: 'Anak mengelompokkan benda berdasarkan ciri-ciri tertentu dengan bimbingan guru.',
+    },
+    SD: {
+      L1: 'Guru menyampaikan materi melalui presentasi PPT. Siswa mencatat poin penting dan menjawab pertanyaan kuis singkat.',
+      L2: 'Diskusi kelompok kecil. Siswa menjelaskan ulang konsep dengan kata-katanya sendiri dan membuat diagram sederhana.',
+      L3: 'Siswa mengerjakan LKS berisi soal penerapan nyata. Guru memberikan scaffolding bertahap.',
+      L4: 'Siswa menganalisis studi kasus sederhana secara berpasangan dan mempresentasikan temuan mereka.',
+    },
+    SMP: {
+      L1: 'Presentasi materi & tanya jawab. Siswa mengisi peta konsep mandiri sebagai catatan terstruktur.',
+      L2: 'Aktivitas jigsaw: setiap kelompok mempelajari sub-topik dan mengajarkan ke kelompok lain.',
+      L3: 'Laboratorium/praktikum terbimbing. Siswa menerapkan konsep dalam eksperimen terstruktur.',
+      L4: 'Analisis data nyata atau studi kasus. Siswa membandingkan variabel dan membuat kesimpulan berbasis bukti.',
+      L5: 'Debat dan diskusi kritis. Siswa mengevaluasi berbagai sumber dan mempertahankan argumen.',
+      L6: 'Proyek mini: siswa merancang solusi untuk masalah nyata di komunitas mereka.',
+    },
+    SMA: {
+      L1: 'Membaca artikel ilmiah dan merangkum konsep utama. Presentasi hasil rangkuman.',
+      L2: 'Diskusi Socratic. Siswa menginterpretasi konsep dari berbagai perspektif.',
+      L3: 'Eksperimen laboratorium mandiri. Siswa merancang prosedur dan melaksanakan.',
+      L4: 'Analisis data penelitian nyata. Siswa mengidentifikasi variabel dan hubungan sebab-akibat.',
+      L5: 'Review peer: siswa mengevaluasi karya teman dengan rubrik ilmiah.',
+      L6: 'Penelitian mini: siswa merancang dan melaksanakan penelitian sederhana secara mandiri.',
+    },
+    SMK: {
+      L1: 'Briefing industri dan demonstrasi prosedur oleh guru/instruktur. Siswa mengidentifikasi langkah-langkah.',
+      L2: 'Studi kasus industri: siswa menjelaskan proses dan prosedur kerja yang diamati.',
+      L3: 'Praktik terbimbing di bengkel/lab menggunakan peralatan standar industri.',
+      L4: 'Troubleshooting nyata: siswa menganalisis kesalahan/kerusakan dan menentukan penyebabnya.',
+      L5: 'Audit/review kualitas kerja: siswa mengevaluasi hasil pekerjaan berdasarkan standar industri.',
+      L6: 'Proyek keahlian terintegrasi: merancang, membuat, dan mempresentasikan produk/jasa nyata.',
+    },
+  };
+  const levelTemplates = templates[j] || templates.SD;
+  return levelTemplates[level] || `Aktivitas pembelajaran ${level} untuk materi ${materi}.`;
+}
+
+function generateWaktu(jpMinggu, mingguEfektif, jpTotal, tpCount, j, m) {
+  const pertemuan = Math.ceil(jpTotal / jpMinggu);
+  const waktuUlangan = Math.floor(pertemuan * 0.15);
+  const waktuEfektif = pertemuan - waktuUlangan;
+  const menit = j === 'SD' ? 35 : j === 'SMP' ? 40 : 45;
+  return [
+    { label: 'Mata Pelajaran', value: m },
+    { label: 'Jenjang', value: j },
+    { label: 'JP per Minggu', value: `${jpMinggu} JP` },
+    { label: 'Minggu Efektif', value: `${mingguEfektif} minggu` },
+    { label: 'Total Jam Pelajaran', value: `${jpTotal} JP (${jpTotal * menit} menit)` },
+    { label: 'Durasi per JP', value: `${menit} menit` },
+    { label: 'Total Pertemuan', value: `${pertemuan} pertemuan` },
+    { label: 'Pertemuan Efektif', value: `${waktuEfektif} pertemuan` },
+    { label: 'Penilaian / UH / PTS / PAS', value: `${waktuUlangan} pertemuan` },
+    { label: 'Jumlah Tujuan Pembelajaran', value: `${tpCount} TP` },
+    { label: 'Rata-rata JP per TP', value: `${Math.ceil(jpTotal / Math.max(tpCount, 1))} JP/TP` },
+    { label: 'Alokasi Semester', value: `${Math.ceil(jpTotal / 2)} JP (Ganjil) + ${Math.floor(jpTotal / 2)} JP (Genap)` },
+  ];
+}
+
+// ══════════════════════════════════════════════════════
+//  RENDER PREVIEW
+// ══════════════════════════════════════════════════════
+function renderPreview() {
+  if (!state.generated) {
+    document.getElementById('previewEmpty').style.display = 'block';
+    document.getElementById('previewContent').style.display = 'none';
+    return;
+  }
+  document.getElementById('previewEmpty').style.display = 'none';
+  document.getElementById('previewContent').style.display = 'block';
+  const g = state.generated;
+
+  // CP Table
+  let cpBody = '';
+  for (const row of g.cpList) {
+    cpBody += `<tr>
+      <td>${row.no}</td>
+      <td><span class="badge badge-primary">${row.elemen}</span></td>
+      <td contenteditable="true">${row.cp}</td>
+      <td><span class="badge badge-neutral">${row.fase}</span></td>
+    </tr>`;
+  }
+  document.querySelector('#tableCp tbody').innerHTML = cpBody;
+
+  // TP Table
+  let tpBody = '';
+  for (const row of g.tpList) {
+    tpBody += `<tr>
+      <td>${row.no}</td>
+      <td contenteditable="true">${row.tp}</td>
+      <td contenteditable="true">${row.materi}</td>
+      <td contenteditable="true">${row.indikator}</td>
+      <td><span class="badge badge-accent">${row.jp} JP</span></td>
+    </tr>`;
+  }
+  document.querySelector('#tableTp tbody').innerHTML = tpBody;
+
+  // ATP Table
+  const levelColors = ['level-l1', 'level-l2', 'level-l3', 'level-l4', 'level-l5', 'level-l6'];
+  let atpBody = '';
+  for (const row of g.atpList) {
+    const lvlNum = parseInt(row.level.replace('L', '')) - 1;
+    atpBody += `<tr>
+      <td>${row.no}</td>
+      <td><span class="atp-level ${levelColors[lvlNum] || 'level-l1'}">${row.level} — ${row.levelLabel}</span></td>
+      <td contenteditable="true">${row.tujuan}</td>
+      <td contenteditable="true">${row.aktivitas}</td>
+      <td>${row.media}</td>
+      <td>${row.asesmen}</td>
+      <td><span class="badge badge-accent">${row.jp} JP</span></td>
+    </tr>`;
+  }
+  document.querySelector('#tableAtp tbody').innerHTML = atpBody;
+
+  // Waktu Table
+  let waktuBody = g.waktu.map(w => `<tr><td><strong>${w.label}</strong></td><td>${w.value}</td></tr>`).join('');
+  document.querySelector('#tableWaktu tbody').innerHTML = waktuBody;
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  const tabMap = { cp: 0, tp: 1, atp: 2, waktu: 3 };
+  document.querySelectorAll('.tab-btn')[tabMap[tab]].classList.add('active');
+  document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════
+//  EXPORT WORD
+// ══════════════════════════════════════════════════════
+async function exportWord() {
+  if (!state.generated) { toast('Generate dokumen terlebih dahulu!', 'error'); return; }
+  toast('Menyiapkan file Word...', 'success');
+  const g = state.generated;
+  const sekolah = v('namaSekolah') || 'Nama Sekolah';
+  const guru = v('namaGuru') || 'Nama Guru';
+  const tahun = v('tahunPelajaran') || '2024/2025';
+  const semester = v('semester') || 'Ganjil';
+
+  try {
+    const { Document, Paragraph, Table, TableRow, TableCell, TextRun, HeadingLevel, AlignmentType, WidthType, PageOrientation, BorderStyle } = docx;
+
+    const headerPara = (text, lvl) => new Paragraph({ text, heading: lvl || HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER, spacing: { after: 120 } });
+    const bodyPara = (text) => new Paragraph({ children: [new TextRun({ text, size: 22 })], spacing: { after: 80 } });
+    const cellStyle = (text, bold, shade) => new TableCell({
+      children: [new Paragraph({ children: [new TextRun({ text: text || '', size: 20, bold: !!bold })], spacing: { before: 60, after: 60 }, indent: { left: 80, right: 80 } })],
+      shading: shade ? { fill: 'D6EFE5', type: 'clear', color: 'auto' } : undefined,
+    });
+
+    const makeTable = (headers, rows) => new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: [
+        new TableRow({ children: headers.map(h => cellStyle(h, true, true)), tableHeader: true }),
+        ...rows.map(r => new TableRow({ children: r.map(c => cellStyle(c)) }))
+      ]
+    });
+
+    const cpRows = g.cpList.map(r => [`${r.no}`, r.elemen, r.cp, r.fase]);
+    const tpRows = g.tpList.map(r => [`${r.no}`, r.tp, r.materi, r.indikator, `${r.jp} JP`]);
+    const atpRows = g.atpList.map(r => [`${r.no}`, `${r.level} — ${r.levelLabel}`, r.tujuan, r.aktivitas, r.media, r.asesmen, `${r.jp} JP`]);
+    const waktuRows = g.waktu.map(w => [w.label, w.value]);
+
+    const doc = new Document({
+      sections: [{
+        properties: { page: { orientation: PageOrientation.LANDSCAPE, margin: { top: 720, bottom: 720, left: 900, right: 900 } } },
+        children: [
+          headerPara('PERANGKAT PEMBELAJARAN KURIKULUM MERDEKA'),
+          headerPara(`${g.meta.m} — ${DB.jenjang[g.meta.j].label} ${g.meta.k}`, HeadingLevel.HEADING_2),
+          bodyPara(`Sekolah     : ${sekolah}`),
+          bodyPara(`Guru        : ${guru}`),
+          bodyPara(`Tahun Pelajaran : ${tahun} | Semester: ${semester} | Fase: ${g.meta.fase}`),
+          bodyPara(`Mata Pelajaran  : ${g.meta.m} | Total JP: ${g.meta.jpTotal} JP`),
+          new Paragraph({ text: '', spacing: { after: 200 } }),
+
+          headerPara('A. CAPAIAN PEMBELAJARAN (CP)', HeadingLevel.HEADING_2),
+          makeTable(['No', 'Elemen', 'Capaian Pembelajaran', 'Fase'], cpRows),
+          new Paragraph({ text: '', spacing: { after: 300 } }),
+
+          headerPara('B. TUJUAN PEMBELAJARAN (TP)', HeadingLevel.HEADING_2),
+          makeTable(['No', 'Tujuan Pembelajaran (ABCD+SMART)', 'Materi Pokok', 'Indikator Ketercapaian', 'JP'], tpRows),
+          new Paragraph({ text: '', spacing: { after: 300 } }),
+
+          headerPara('C. ALUR TUJUAN PEMBELAJARAN (ATP)', HeadingLevel.HEADING_2),
+          makeTable(['No', 'Level Bloom', 'Tujuan', 'Aktivitas Pembelajaran', 'Media', 'Asesmen', 'JP'], atpRows),
+          new Paragraph({ text: '', spacing: { after: 300 } }),
+
+          headerPara('D. ALOKASI WAKTU', HeadingLevel.HEADING_2),
+          makeTable(['Komponen', 'Keterangan'], waktuRows),
+          new Paragraph({ text: '', spacing: { after: 400 } }),
+
+          new Paragraph({
+            children: [new TextRun({ text: 'Generated by EduGen Pro — Bilqis Gaya Hasanah | Kurikulum Merdeka Generator', size: 18, color: '888888', italics: true })],
+            alignment: AlignmentType.CENTER,
+          })
+        ]
+      }]
+    });
+
+    const blob = await docx.Packer.toBlob(doc);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `CP-TP-ATP_${g.meta.m.replace(/\s/g,'_')}_${g.meta.k.replace(/\s/g,'_')}_${tahun.replace('/','_')}.docx`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('File Word berhasil diunduh! ✓', 'success');
+  } catch(e) {
+    console.error(e);
+    toast('Gagal membuat file Word. Coba lagi.', 'error');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  UTILITY
+// ══════════════════════════════════════════════════════
+function toast(msg, type) {
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = `toast ${type || ''}`;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
+
+function resetAll() {
+  if (!confirm('Reset semua data dan mulai dari awal?')) return;
+  localStorage.removeItem('edugen_pro');
+  state = { step: 1, jenjang: null, kelas: null, fase: null, mapel: null, elemenTerpilih: [], generated: null };
+  location.reload();
+}
+
+// Dark mode
+document.getElementById('btnDarkMode').addEventListener('click', () => {
+  const html = document.documentElement;
+  const isDark = html.dataset.theme === 'dark';
+  html.dataset.theme = isDark ? 'light' : 'dark';
+  document.getElementById('btnDarkMode').textContent = isDark ? '🌙' : '☀️';
+  localStorage.setItem('edugen_theme', html.dataset.theme);
+});
+
+// Export JSON
+document.getElementById('btnExportJSON').addEventListener('click', () => {
+  const data = localStorage.getItem('edugen_pro');
+  if (!data) { toast('Belum ada data untuk diexport', 'error'); return; }
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'edugen_data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Data JSON berhasil diexport ✓', 'success');
+});
+
+// Import JSON
+document.getElementById('btnImportJSON').addEventListener('click', () => {
+  document.getElementById('fileImport').click();
+});
+document.getElementById('fileImport').addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      JSON.parse(e.target.result);
+      localStorage.setItem('edugen_pro', e.target.result);
+      toast('Data berhasil diimport, memuat ulang...', 'success');
+      setTimeout(() => location.reload(), 800);
+    } catch { toast('File JSON tidak valid!', 'error'); }
+  };
+  reader.readAsText(file);
+});
+
+// Init
+(function init() {
+  const theme = localStorage.getItem('edugen_theme') || 'light';
+  document.documentElement.dataset.theme = theme;
+  document.getElementById('btnDarkMode').textContent = theme === 'dark' ? '☀️' : '🌙';
+  loadState();
+})();
+</script>
+</body>
+</html>
